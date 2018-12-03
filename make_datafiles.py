@@ -11,7 +11,7 @@ import pickle as pkl
 import tensorflow as tf
 import re
 
-finished_files_dir = "finished_files"
+finished_files_dir = "../finished_files"
 num_tokens_per_sentence = 50
 num_sentence = 20
 
@@ -45,15 +45,15 @@ if __name__ == '__main__':
     txt_file = 'gs://bytecup2018/bytecup2018/bytecup.corpus.eval.txt'
     out_file =  os.path.join(finished_files_dir, "val.tar")
     with tf.gfile.Open(txt_file, "r") as f:
-        lines = f.readlines()
-        for idx, line in enumerate(lines):
-            print("Writing story {} of {}; {:.2f} percent done".format(idx, len(lines), float(idx)*100.0/float(len(lines))))
-            id_num = json.loads(line)['id']
-            article = preprocess_sentence(json.loads(line)['content']).split()
-            abstract_sents = [preprocess_sentence(json.loads(line)['title'])]
-            #print(article)
-            article_sents = [' '.join(article[i:i+num_tokens_per_sentence]) for i in range(0, len(article), num_tokens_per_sentence)]
-            with tarfile.open(out_file, 'w') as writer:
+        with tarfile.open(out_file, 'w') as writer:
+            lines = f.readlines()
+            for idx, line in enumerate(lines):
+                print("Writing story {} of {}; {:.2f} percent done".format(idx, len(lines), float(idx)*100.0/float(len(lines))))
+                id_num = json.loads(line)['id']
+                article = preprocess_sentence(json.loads(line)['content']).split()
+                abstract_sents = [preprocess_sentence(json.loads(line)['title'])]
+                #print(article)
+                article_sents = [' '.join(article[i:i+num_tokens_per_sentence]) for i in range(0, len(article), num_tokens_per_sentence)]
                 # Write to JSON file
                 js_example = {}
                 js_example['id'] = id_num
@@ -70,15 +70,15 @@ if __name__ == '__main__':
     txt_file = 'gs://bytecup2018/bytecup2018/bytecup.corpus.test.txt'
     out_file =  os.path.join(finished_files_dir, "test.tar")
     with tf.gfile.Open(txt_file, "r") as f:
-        lines = f.readlines()
-        for idx, line in enumerate(lines):
-            print("Writing story {} of {}; {:.2f} percent done".format(idx, len(lines), float(idx)*100.0/float(len(lines))))
-            id_num = json.loads(line)['id']
-            article = preprocess_sentence(json.loads(line)['content']).split()
-            abstract_sents = [preprocess_sentence(json.loads(line)['title'])]
-            #print(article)
-            article_sents = [' '.join(article[i:i+num_tokens_per_sentence]) for i in range(0, len(article), num_tokens_per_sentence)]
-            with tarfile.open(out_file, 'w') as writer:
+        with tarfile.open(out_file, 'w') as writer:
+            lines = f.readlines()
+            for idx, line in enumerate(lines):
+                print("Writing story {} of {}; {:.2f} percent done".format(idx, len(lines), float(idx)*100.0/float(len(lines))))
+                id_num = json.loads(line)['id']
+                article = preprocess_sentence(json.loads(line)['content']).split()
+                abstract_sents = [preprocess_sentence(json.loads(line)['title'])]
+                #print(article)
+                article_sents = [' '.join(article[i:i+num_tokens_per_sentence]) for i in range(0, len(article), num_tokens_per_sentence)]
                 # Write to JSON file
                 js_example = {}
                 js_example['id'] = id_num
@@ -92,21 +92,21 @@ if __name__ == '__main__':
                 writer.addfile(tar_info, save_file)
     
     # generate train tar and vocab file
-    train_files_size = 3
+    train_files_size = 2
     out_file =  os.path.join(finished_files_dir, "train.tar")
     vocab_counter = collections.Counter()
     for i in range(train_files_size):
         txt_file = 'gs://bytecup2018/bytecup2018/bytecup.corpus.train.{}.txt'.format(i)
         with tf.gfile.Open(txt_file, "r") as f:
-            lines = f.readlines()
-            for idx, line in enumerate(lines):
-                print("Writing story {} of {}; {:.2f} percent done".format(idx, len(lines), float(idx)*100.0/float(len(lines))))
-                id_num = json.loads(line)['id']
-                article = preprocess_sentence(json.loads(line)['content']).split()
-                abstract_sents = [preprocess_sentence(json.loads(line)['title'])]
-                #print(article)
-                article_sents = [' '.join(article[i:i+num_tokens_per_sentence]) for i in range(0, len(article), num_tokens_per_sentence)]
-                with tarfile.open(out_file, 'w') as writer:
+            with tarfile.open(out_file, 'w') as writer:
+                lines = f.readlines()
+                for idx, line in enumerate(lines):
+                    print("Writing story {} of {}; {:.2f} percent done".format(idx, len(lines), float(idx)*100.0/float(len(lines))))
+                    id_num = json.loads(line)['id']
+                    article = preprocess_sentence(json.loads(line)['content']).split()
+                    abstract_sents = [preprocess_sentence(json.loads(line)['title'])]
+                    #print(article)
+                    article_sents = [' '.join(article[i:i+num_tokens_per_sentence]) for i in range(0, len(article), num_tokens_per_sentence)]
                     # Write to JSON file
                     js_example = {}
                     js_example['id'] = id_num
