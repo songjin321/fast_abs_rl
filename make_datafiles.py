@@ -95,10 +95,10 @@ if __name__ == '__main__':
     train_files_size = 2
     out_file =  os.path.join(finished_files_dir, "train.tar")
     vocab_counter = collections.Counter()
-    for i in range(train_files_size):
-        txt_file = 'gs://bytecup2018/bytecup2018/bytecup.corpus.train.{}.txt'.format(i)
-        with tf.gfile.Open(txt_file, "r") as f:
-            with tarfile.open(out_file, 'w') as writer:
+    with tarfile.open(out_file, 'w') as writer:
+        for i in range(train_files_size):
+            txt_file = 'gs://bytecup2018/bytecup2018/bytecup.corpus.train.{}.txt'.format(i)
+            with tf.gfile.Open(txt_file, "r") as f:
                 lines = f.readlines()
                 for idx, line in enumerate(lines):
                     print("Writing story {} of {}; {:.2f} percent done".format(idx, len(lines), float(idx)*100.0/float(len(lines))))
